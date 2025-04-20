@@ -11,9 +11,5 @@ import lombok.ToString;
 @ToString
 
 public class Board {
-
-
-    public String boardTitle;
-
-
+    private String boardTitle;
 }

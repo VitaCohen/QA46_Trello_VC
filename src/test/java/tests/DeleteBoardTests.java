@@ -15,9 +15,11 @@ import java.lang.reflect.Method;
 
 import static utils.RandomUtils.*;
 
+public class DeleteBoardTests extends AppManager {
 
-public class BoardsTests extends AppManager {
-    @BeforeMethod(alwaysRun = true)
+    BoardsPage boardsPage;
+
+    @BeforeMethod
     public void login(Method method) {
         User user = User.builder().
                 email("cohen0402@gmail.com")
@@ -27,25 +29,21 @@ public class BoardsTests extends AppManager {
                 + "whis data user" + user);
         new HomePage(getDriver()).clickBtnLogin();
         new LoginPage(getDriver()).login(user);
+        boardsPage = new BoardsPage(getDriver());
+        Board board = Board.builder().boardTitle(generateString(6)).build();
+        boardsPage.createNewBoard(board);
+        //new MyBoardPage(getDriver()).goToBoardsPage();
+
+
     }
+
 
     @Test(groups = {"smoke"})
-    public void createNewPositiveTest() {
-        Board board = Board.builder().boardTitle(generateString(5))
-                .build();
-        new BoardsPage(getDriver()).createNewBoard(board);
-        Assert.assertTrue(new MyBoardPage(getDriver())
-                .validateBoardName(board.getBoardTitle(), 10));
-
+    public void deleteFirstBoardTestPositive() {
+        //boardsPage.openFirstBoard();
+        new MyBoardPage(getDriver()).deleteBoard();
+        Assert.assertTrue(boardsPage.validatePopUpMessage("Board deleted."));
     }
 
-    @Test
-    public void createNewNegativeTest() {
-        Board board = Board.builder().boardTitle("")
-                .build();
-        new BoardsPage(getDriver()).setBtnCreateNewBoardNegative(board);
-        Assert.assertTrue(new BoardsPage(getDriver()).buttonCreateIsNotClicable());
-
-    }
 
 }

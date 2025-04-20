@@ -25,7 +25,7 @@ public class BasePage {
     }
 
     public void clickWait(WebElement element, int time){
-        new WebDriverWait(driver, Duration.ofSeconds(5))
+        new WebDriverWait(driver, Duration.ofSeconds(30))
         .until(ExpectedConditions.elementToBeClickable(element)).click();
 
     }
@@ -33,7 +33,7 @@ public class BasePage {
     public boolean validateTextInElementWait(WebElement element, String text, int time){
 
         try {
-            return new WebDriverWait(driver, Duration.ofSeconds(5))
+            return new WebDriverWait(driver, Duration.ofSeconds(10))
                     .until(ExpectedConditions.textToBePresentInElement(element, text));
         } catch (NoSuchElementException | TimeoutException exception) {
             System.out.println("Created exception" + exception.getMessage());

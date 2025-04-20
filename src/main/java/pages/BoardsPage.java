@@ -1,4 +1,5 @@
 package pages;
+import dto.Board;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -18,15 +19,49 @@ public class BoardsPage extends BasePage {
                 (new AjaxElementLocatorFactory(driver, 10), this);
     }
 
-@FindBy(xpath = "//li[@data-testid='create-board-tile']")
+    @FindBy(xpath = "//*[text()='Create new board']")
     WebElement btnCreateNewBoard;
+    @FindBy(xpath = "//input[@data-testid='create-board-title-input']")
+    WebElement inputBoardTitle;
+    @FindBy(xpath = "//button[@data-testid='create-board-submit-button']")
+    WebElement buttonCreateBoardSubmit;
 
-    public void createNewBoard(){
-        clickWait(btnCreateNewBoard, 3);
-    }
+    @FindBy(xpath = "//a[@class='board-tile mod-light-background']")
+    WebElement firstBoard;
 
-    public boolean validateUrl(){
-        return  new WebDriverWait(driver, Duration.ofSeconds(3))
+    @FindBy(xpath = "//span[@class='QMKgZFIlTLiEJN']")
+    WebElement popUpMessageBoardDelete;
+
+   // public void openFirstBoard(){
+     //   clickWait(firstBoard, 3);
+    //}
+
+    public boolean validateUrl() {
+        return new WebDriverWait(driver, Duration.ofSeconds(3))
                 .until(ExpectedConditions.urlContains("boards"));
+
     }
+    public void createNewBoard(Board board) {
+        clickWait(btnCreateNewBoard, 10);
+        inputBoardTitle.sendKeys(board.getBoardTitle());
+        clickWait(buttonCreateBoardSubmit,10);
+    }
+
+   public void setBtnCreateNewBoardNegative(Board board){
+       clickWait(btnCreateNewBoard, 3);
+       inputBoardTitle.sendKeys(board.getBoardTitle());
+   }
+
+   public boolean buttonCreateIsNotClicable(){
+        return  new WebDriverWait(driver, Duration.ofSeconds(3))
+                .until((ExpectedConditions.not(ExpectedConditions
+                        .elementToBeClickable(buttonCreateBoardSubmit))));
+
+   }
+
+   public boolean validatePopUpMessage(String text){
+        return validateTextInElementWait(popUpMessageBoardDelete,text,5);
+   }
+
+
 }
